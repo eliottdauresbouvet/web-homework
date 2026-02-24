@@ -34,4 +34,15 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     });
 
+    
+
+    const incluse = a.every(x => b.includes(x));
+
+    console.log(incluse); // true
+
+
+    const Combinations = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]];
+    Combinations.forEach(combination => {
+        if (cells.classList.contains("clicked") )
+
 });
