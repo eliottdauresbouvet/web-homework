@@ -1,0 +1,63 @@
+.profil {
+  display: flex;
+  align-items: center; /* aligne verticalement */
+  gap: 20px; /* espace entre texte et image */
+}
+
+#photo {
+  width: 100px; /* ou la taille que tu veux */
+  border-radius: 8px; /* optionnel */
+  margin-top: 30px;
+  margin-left: 30px;
+}
+
+#photo.grand {
+  transform: scale(1.5); /* agrandissement */
+}
+
+.cv {
+  display: flex;
+  gap: 20px;
+  margin-top: 50px;
+  align-items: stretch; /* les deux colonnes ont la même hauteur */
+}
+
+/* Colonnes */
+.experience,
+.colonne-droite {
+  flex: 1;
+}
+
+/* Partie gauche plus large si tu veux */
+.experience {
+  flex: 2;
+  border: 2px solid #1e90ff;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #e6f0ff;
+}
+
+/* Colonne droite */
+.colonne-droite {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Chaque cadre prend 1/3 de la hauteur de la colonne droite */
+.cadre {
+  flex: 1; /* ← la ligne qui manquait */
+  border: 2px solid #1e90ff;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #e6f0ff;
+}
+
+/* Responsive : colonne droite passe en dessous */
+@media (max-width: 900px) {
+  .cv {
+    flex-direction: column;
+  }
+}
+
