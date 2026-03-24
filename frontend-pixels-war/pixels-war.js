@@ -8,7 +8,8 @@
 
 document.addEventListener("DOMContentLoaded",
     async () => {
-
+        let NI = 0
+        let NJ = 0
         let MAP_ID = "TEST"
         let API_KEY = undefined
 
@@ -63,6 +64,8 @@ document.addEventListener("DOMContentLoaded",
             // json contient : ni, nj, data, api_key
             MAP_ID = mapid;
             API_KEY = json.api_key;
+            NI = json.ni;
+            NJ = json.nj;
 
             draw_map(json.ni, json.nj, json.data);
         }
@@ -153,9 +156,12 @@ document.addEventListener("DOMContentLoaded",
                 return;
             }
 
-            const res = await fetch(`/api/v2/maps/${MAP_ID}/refresh?api_key=${API_KEY}`, {
+            const res = await fetch(`/api/v2/${MAP_ID}/deltas`, {
                 method: "GET",
-                credentials: "include"
+                credentials: "include",
+                headers: {
+                    "API-KEY": API_KEY        // ← ajout ici
+                }
             });
 
             if (!res.ok) {
@@ -164,9 +170,12 @@ document.addEventListener("DOMContentLoaded",
             }
 
             const json = await res.json();
+            
+            console.log("réponse deltas:", json)
+            apply_changes(NI, NJ, json.deltas);
 
             // json contient : ni, nj, changes
-            apply_changes(json.ni, json.nj, json.changes);
+            apply_changes(NI, NJ, json.changes);
 }
 
 
@@ -182,31 +191,23 @@ document.addEventListener("DOMContentLoaded",
                 return;
             }
 
-            const res = await fetch(`/api/v2/maps/${MAP_ID}/set_pixel`, {
+            const res = await fetch(`/api/v2/${MAP_ID}/set`, {
                 method: "POST",
                 credentials: "include",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "API-KEY": API_KEY        // ← ajout ici
                 },
-                body: JSON.stringify({
-                    i: i,
-                    j: j,
-                    r: r,
-                    g: g,
-                    b: b,
-                    api_key: API_KEY
-                })
+                body: JSON.stringify({ i, j, r, g, b })
             });
+    
 
             if (!res.ok) {
                 alert(`Erreur lors du set_pixel : ${res.status} ${res.statusText}`);
                 return;
             }
 
-    const json = await res.json();
-
-    // json contient : ni, nj, changes
-    apply_changes(json.ni, json.nj, json.changes);
+            await refresh();
 }
 
         function hex_to_rgb(hex) {
@@ -222,6 +223,7 @@ document.addEventListener("DOMContentLoaded",
         }
         //TODO:
         // why not refresh the grid every 2 seconds?
+        setInterval(refresh, 2000);
         // or even refresh the grid after clicking a pixel?
 
         // ---- cosmetic / convenience / bonus:
