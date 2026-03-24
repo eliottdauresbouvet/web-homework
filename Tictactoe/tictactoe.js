@@ -8,7 +8,10 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!cell.classList.contains("clicked")) {
                 cell.classList.add("clicked");
                 cell.style.backgroundColor = colors[currentColorIndex];
+                cell.classList.add(colors[currentColorIndex]);
                 currentColorIndex = (currentColorIndex + 1) % colors.length;
+                checkWin(cells)
+                
             }
         });
         cell.addEventListener("mouseover", () => {
@@ -22,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 cell.classList.remove("hovered");
 
             }    
-        });    
+        });  
     });
 
     const resetButton = document.getElementById("reset");
@@ -30,19 +33,40 @@ document.addEventListener("DOMContentLoaded", () => {
         cells.forEach(cell => {
             cell.classList.remove("clicked");
             cell.classList.remove("hovered");
+            cell.classList.remove("green");
+            cell.classList.remove("red");
             cell.style.backgroundColor = "";
         })
     });
-
-    
-
-    const incluse = a.every(x => b.includes(x));
-
-    console.log(incluse); // true
-
-
-    const Combinations = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]];
-    Combinations.forEach(combination => {
-        if (cells.classList.contains("clicked") )
-
 });
+
+
+            
+
+function inclus(a,b) {
+    return a.every(x=>b.includes(x));
+}
+
+function listContainsClass(cells, className) {
+    const list = [];
+    cells.forEach((cell, index) => {
+        if (cell.classList.contains(className)) {
+            list.push(index);
+        }
+    })
+    return list;
+}
+
+function checkWin(cells) {
+    const Combinations = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]];
+            Combinations.forEach(combination => {
+                if (inclus(combination, listContainsClass(cells, "red") )) { 
+                    console.log("Red wins !");
+            
+                };
+                if (inclus(combination, listContainsClass(cells, "green") )) { 
+                    console.log("Green wins !");
+                };
+            });
+
+}

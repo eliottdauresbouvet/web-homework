@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded",
             const mapid = document.getElementById("mapid-input").value;
 
             // requête init
-            const res = await fetch(`/api/v2/maps/${mapid}/init`, {
+            const res = await fetch(`/api/v2/${mapid}/init`, {
                 method: "GET",
                 credentials: "include"
             });
@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded",
                 return;
             }
 
-            const res = await fetch(`/api/v2/maps/${MAP_ID}/deltas?api_key=${API_KEY}`, {
+            const res = await fetch(`/api/v2/maps/${MAP_ID}/refresh?api_key=${API_KEY}`, {
                 method: "GET",
                 credentials: "include"
             });
@@ -167,9 +167,7 @@ document.addEventListener("DOMContentLoaded",
 
             // json contient : ni, nj, changes
             apply_changes(json.ni, json.nj, json.changes);
-        }
-
-        document.getElementById("refresh-button").addEventListener("click", refresh);
+}
 
 
         //TODO:
@@ -184,7 +182,7 @@ document.addEventListener("DOMContentLoaded",
                 return;
             }
 
-            const res = await fetch(`/api/v2/maps/${MAP_ID}/set`, {
+            const res = await fetch(`/api/v2/maps/${MAP_ID}/set_pixel`, {
                 method: "POST",
                 credentials: "include",
                 headers: {
@@ -205,11 +203,11 @@ document.addEventListener("DOMContentLoaded",
                 return;
             }
 
-            const json = await res.json();
+    const json = await res.json();
 
-            // json contient : ni, nj, changes
-            apply_changes(json.ni, json.nj, json.changes);
-        }
+    // json contient : ni, nj, changes
+    apply_changes(json.ni, json.nj, json.changes);
+}
 
         function hex_to_rgb(hex) {
             // hex est du type "#RRGGBB"
@@ -225,7 +223,6 @@ document.addEventListener("DOMContentLoaded",
         //TODO:
         // why not refresh the grid every 2 seconds?
         // or even refresh the grid after clicking a pixel?
-        setInterval(refresh, 2000);
 
         // ---- cosmetic / convenience / bonus:
 
