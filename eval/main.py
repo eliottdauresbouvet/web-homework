@@ -23,11 +23,6 @@ def get_session():
 
 SessionDep = Annotated[Session, Depends(get_session)]
 
-app = FastAPI(lifespan=lifespan)
-@app.get("/")
-async def root():
-    return {"message" : "Hello World"}
-
 class Enrollment(SQLModel, table = True):
     user_id : int = Field(foreign_key="user.id", primary_key = True)
     group_id : int = Field(foreign_key="group.id", primary_key = True)
@@ -53,3 +48,24 @@ class Message(SQLModel, table=True):
 
     user: "User" = Relationship()
     group: "Group" = Relationship()
+
+app = FastAPI(lifespan=lifespan)
+
+@app.get("/")
+async def root():
+    return {"message" : "Hello World"}
+
+@app.post("/api/users/")
+async def create_users(user : User, session : SessionDep):
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+    return(user)
+
+@app.post("/api/groups/")
+async def create_groups(group : Group, session : SessionDep):
+    session.add(group)
+    session.commit()
+    session.refresh(group)
+    return(group)
+
