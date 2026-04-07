@@ -27,12 +27,18 @@ class Enrollment(SQLModel, table = True):
     user_id : int = Field(foreign_key="user.id", primary_key = True)
     group_id : int = Field(foreign_key="group.id", primary_key = True)
 
+class UserCreate(SQLModel):
+    name : str
+
 class User(SQLModel, table = True):
     id : int | None = Field(default=None, primary_key=True)
     name : str
 
     groups : list["Group"] = Relationship(back_populates="users", link_model=Enrollment)
     messages: list["Message"] = Relationship(back_populates="user")
+
+class GroupCreate(SQLModel):
+    name : str
 
 class Group(SQLModel, table = True):
     id : int | None = Field(default=None, primary_key=True)
@@ -56,16 +62,25 @@ async def root():
     return {"message" : "Hello World"}
 
 @app.post("/api/users/")
-async def create_users(user : User, session : SessionDep):
+async def create_users(user : UserCreate, session : SessionDep):
     session.add(user)
     session.commit()
     session.refresh(user)
     return(user)
 
 @app.post("/api/groups/")
-async def create_groups(group : Group, session : SessionDep):
+async def create_groups(group : GroupCreate, session : SessionDep):
     session.add(group)
     session.commit()
     session.refresh(group)
     return(group)
+
+@app.post("api/messages/")
+async def create_messages(message : Message, session : SessionDep):
+    session.add(message)
+    session.commit()
+    session.refresh(message)
+    return(message)
+
+
 
