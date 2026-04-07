@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 from sqlmodel import SQLModel, Field, Relationship, create_engine, Session
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
+from typing import Annotated
 
 
 DATABASE_URL = "sqlite:///database.db"
@@ -16,6 +17,16 @@ async def lifespan(app: FastAPI):
     # shutdown logic comes here
     # none so far
 
+def get_session():
+    with Session(engine) as session:
+        yield session
+
+SessionDep = Annotated[Session, Depends(get_session)]
+
+app = FastAPI(lifespan=lifespan)
+@app.get("/")
+async def root():
+    return {"message" : "Hello World"}
 
 class Enrollment(SQLModel, table = True):
     user_id : int = Field(foreign_key="user.id", primary_key = True)
