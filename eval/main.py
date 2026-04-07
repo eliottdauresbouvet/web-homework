@@ -1,4 +1,21 @@
-from sqlmodel import SQLModel, Field, Relationship
+from contextlib import asynccontextmanager
+from sqlmodel import SQLModel, Field, Relationship, create_engine, Session
+from fastapi import FastAPI
+
+
+DATABASE_URL = "sqlite:///database.db"
+engine = create_engine(DATABASE_URL, echo=True)
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # startup logic comes here
+    # Create the database and tables if they don't exist
+    SQLModel.metadata.create_all(engine)
+
+    yield
+    # shutdown logic comes here
+    # none so far
+
 
 class Enrollment(SQLModel, table = True):
     user_id : int = Field(foreign_key="user.id", primary_key = True)
@@ -9,14 +26,19 @@ class User(SQLModel, table = True):
     name : str
 
     groups : list["Group"] = Relationship(back_populates="users", link_model=Enrollment)
+    messages: list["Message"] = Relationship(back_populates="user")
 
 class Group(SQLModel, table = True):
     id : int | None = Field(default=None, primary_key=True)
     name : str
     users : list["User"] = Relationship(back_populates="groups", link_model=Enrollment)
+    messages: list["Message"] = Relationship(back_populates="group")
 
 class Message(SQLModel, table=True):
     id : int | None = Field(default=None, primary_key=True)
     content : str
     user_id : int = Field(foreign_key="user.id")
     group_id : int = Field(foreign_key="group.id")
+
+    user: "User" = Relationship()
+    group: "Group" = Relationship()
