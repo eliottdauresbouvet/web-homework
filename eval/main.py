@@ -114,4 +114,57 @@ def get_groups(session: SessionDep):
         for group in groups
     ]
 
+class EnrollmentCreate(SQLModel):
+    user_id : int
+    group_id : int
+
+@app.post("/api/subscribe")
+def subscribe(enrollment : EnrollmentCreate, session: SessionDep):
+    if (
+        not(session.get(User, enrollment.user_id) == None)
+        and not(session.get(Group, enrollment.group_id) == None) 
+        and (session.get(Enrollment, (enrollment.user_id, enrollment.group_id)) == None)
+    ):
+        db_enrollment = Enrollment(user_id=enrollment.user_id, group_id=enrollment.group_id)
+        session.add(db_enrollment)
+        session.commit()
+        return {"message" : "L'utilisateur a été inscrit au groupe avec succès"}
+    else: 
+        return {"message" : "L'utilisateur ou le groupe n'existe pas, ou l'utilisateur est déjà inscrit au groupe"}
+
+@app.post("/api/unsubscribe")
+def unsubscribe(enrollment : EnrollmentCreate, session: SessionDep):
+    db_enrollment = session.get(Enrollment, (enrollment.user_id, enrollment.group_id))
+    db_user = session.get(User, enrollment.user_id)
+    db_group = session.get(Group, enrollment.group_id)
+    if (
+        db_user is not None
+        and db_group is not None 
+        and db_enrollment is not None
+    ):
+        session.delete(db_enrollment)
+        session.commit()
+        return {"message" : "L'utilisateur a été désinscrit du groupe avec succès"}
+    else: 
+        return {"message" : "L'utilisateur ou le groupe n'existe pas, ou l'utilisateur n'est pas inscrit au groupe"}
+
+@app.get("/api/groups_users/{user_id}")
+def get_groups_users(user_id : int, session : SessionDep):
+    user = session.get(User, user_id)
+    if user is not None:
+        return [
+            {
+                "id": group.id,
+                "name": group.name
+            }
+            for group in user.groups
+        ]
+    else:
+        return {"message" : "L'utilisateur n'existe pas"}
+
+
+
+         
+
+
 
