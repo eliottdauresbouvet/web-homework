@@ -215,8 +215,18 @@ async def websocket_endpoint(websocket : WebSocket, group_id: int):
         connections[group_id].remove(websocket)
 
 @app.get("/chat/{group_id}")
-def get_chat(request: Request, group_id: int):
-    return templates.TemplateResponse("chat.html.j2", {"request": request, "group_id": group_id})
+def get_chat(request: Request, group_id: int, session: SessionDep):
+    group = session.get(Group, group_id)
+    return templates.TemplateResponse("chat.html.j2", {"request": request, "group_id": group_id, "group_name": group.name})
+
+@app.get("/rooms")
+def rooms_page(request: Request):
+    return templates.TemplateResponse("rooms.html.j2", {"request": request})
+ 
+@app.get("/username")
+def username_page(request: Request):
+    return templates.TemplateResponse("username.html.j2", {"request": request})
+
 
 
 

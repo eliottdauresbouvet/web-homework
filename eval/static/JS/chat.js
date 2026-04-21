@@ -17,3 +17,4 @@ document.getElementById("sendBtn").onclick = () => {
 
     input.value = "";
 };
+

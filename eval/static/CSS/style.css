@@ -1,0 +1,242 @@
+/* --- PAGE GLOBALE --- */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, sans-serif;
+    background: #257425; /* vert très foncé */
+    color: #ffffff;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* --- CONTENEUR PRINCIPAL --- */
+.chat-root {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    max-width: 900px;
+    height: 90vh;
+    background: #ffffff; /* vert foncé */
+    border-radius: 12px;
+    border: 2px solid #1f3d1f;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 25px #1f3d1f;
+}
+
+/* --- TITRE --- */
+h1, h2 {
+    margin: 0 0 15px 0;
+    font-size: 24px;
+    color: #000000; /* vert clair */
+}
+
+/* --- ZONE DES MESSAGES --- */
+#messages {
+    flex: 1;
+    background: #ffffff;
+    border: 1px solid #ffffff;
+    border-radius: 8px;
+    padding: 12px;
+    overflow-y: auto;
+    font-size: 15px;
+}
+
+/* Messages individuels */
+#messages p {
+    background: #257425;
+    padding: 8px 10px;
+    border-radius: 6px;
+    margin: 6px 0;
+    color: #eaffea;
+}
+
+/* --- INPUT + BOUTON --- */
+.chat-input-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+/* Champ texte */
+#messageInput {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #2f5f2f;
+    background: #0f1d0f;
+    color: #ffffff;
+    font-size: 15px;
+}
+
+#messageInput:focus {
+    outline: none;
+    border-color: #2f5f2f;
+}
+
+/* Bouton */
+#sendBtn {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    background: #2f8f2f;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+#sendBtn:hover {
+    background: #3fbf3f;
+}
+
+#sendBtn:active {
+    transform: scale(0.97);
+}
+
+/* --- PAGE ROOMS --- */
+.rooms-root {
+    width: 90%;
+    max-width: 900px;
+    height: 90vh;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 2px solid #1f3d1f;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 25px #1f3d1f;
+}
+
+/* Titre */
+.rooms-root h1 {
+    margin: 0 0 20px 0;
+    font-size: 26px;
+    color: #257425;
+}
+
+/* Liste des rooms */
+#rooms {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Une room */
+.room-card {
+    background: #f5fff5;
+    border: 1px solid #1f3d1f;
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Nom de la room */
+.room-name {
+    font-size: 18px;
+    color: #257425;
+    font-weight: 600;
+}
+
+/* Boutons */
+.room-card button {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    background: #2f8f2f;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.15s;
+    margin-left: 8px;
+}
+
+.room-card button:hover {
+    background: #3fbf3f;
+}
+
+.room-card button:active {
+    transform: scale(0.97);
+}
+
+/* Bouton "Entrer" */
+.room-card a button {
+    background: #257425;
+}
+
+.room-card a button:hover {
+    background: #2f8f2f;
+}
+
+/* --- PAGE USERNAME --- */
+.username-root {
+    width: 90%;
+    max-width: 450px;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 2px solid #1f3d1f;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 0 25px #1f3d1f;
+}
+
+.username-root h1 {
+    margin: 0 0 10px 0;
+    font-size: 28px;
+    color: #257425;
+}
+
+.subtitle {
+    margin-bottom: 25px;
+    font-size: 16px;
+    color: #2f5f2f;
+}
+
+/* Champ pseudo */
+#usernameInput {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #2f5f2f;
+    background: #f5fff5;
+    color: #0f1d0f;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+#usernameInput:focus {
+    outline: none;
+    border-color: #4cff4c;
+}
+
+/* Bouton continuer */
+#usernameBtn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    background: #2f8f2f;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+#usernameBtn:hover {
+    background: #3fbf3f;
+}
+
+#usernameBtn:active {
+    transform: scale(0.97);
+}

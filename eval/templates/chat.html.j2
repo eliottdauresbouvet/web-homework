@@ -1,19 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Chat du groupe {{ group_id }}</title>
+    <title>{{ group_name }}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <h1>Chat du groupe {{ group_id }}</h1>
+    <main class="chat-root">
 
-    <div id="messages"></div>
+        <h1>{{ group_name }}</h1>
 
-    <input id="messageInput" type="text" placeholder="Écris un message">
-    <button id="sendBtn">Envoyer</button>
+        <div id="messages"></div>
+
+        <div class="chat-input-row">
+            <input id="messageInput" type="text" placeholder="Écris un message">
+            <button id="sendBtn">Envoyer</button>
+        </div>
+
+    </main>
+
     <script>
         const groupId = {{ group_id }};
+        const groupName = "{{ group_name }}";
     </script>
     <script src="/static/js/chat.js"></script>
 </body>
+
 </html>
- 
+
+
