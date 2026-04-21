@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat du groupe {{ group_id }}</title>
+</head>
+<body>
+    <h1>Chat du groupe {{ group_id }}</h1>
+
+    <div id="messages"></div>
+
+    <input id="messageInput" type="text" placeholder="Écris un message">
+    <button id="sendBtn">Envoyer</button>
+    <script>
+        const groupId = {{ group_id }};
+    </script>
+    <script src="/static/js/chat.js"></script>
+</body>
+</html>
+ 

@@ -2,7 +2,13 @@ from contextlib import asynccontextmanager
 from sqlmodel import SQLModel, Field, Relationship, create_engine, Session, select
 from fastapi import FastAPI, Depends
 from typing import Annotated
-from Pydantic import BaseModel
+from fastapi import Request
+from fastapi import WebSocket, WebSocketDisconnect
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+
+
 
 
 DATABASE_URL = "sqlite:///database.db"
@@ -190,6 +196,33 @@ def get_messages_group(group_id : int, session : SessionDep):
     else:
         return {"message" : "Le groupe n'existe pas"}
 
+templates = Jinja2Templates(directory="templates")
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+connections = {}
+
+@app.websocket("/ws/group/{group_id}")
+async def websocket_endpoint(websocket : WebSocket, group_id: int):
+    await websocket.accept()
+    connections.setdefault(group_id, []).append(websocket)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            print("Message reçu :", data)
+            for connection in connections[group_id]:
+                await connection.send_text(data)
+    except WebSocketDisconnect:
+        connections[group_id].remove(websocket)
+
+@app.get("/chat/{group_id}")
+def get_chat(request: Request, group_id: int):
+    return templates.TemplateResponse("chat.html.j2", {"request": request, "group_id": group_id})
+
+
+
+
+
+    
 
 
 
