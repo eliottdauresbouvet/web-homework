@@ -162,6 +162,35 @@ def get_groups_users(user_id : int, session : SessionDep):
     else:
         return {"message" : "L'utilisateur n'existe pas"}
 
+@app.post("/api/messages/group/{group_id}")
+def create_message_group(group_id : int, message : MessageCreate, session : SessionDep):
+    db_group = session.get(Group, group_id)
+    db_user = session.get(User, message.user_id)
+    if db_group is not None and db_user is not None and db_user in db_group.users:
+        db_message = Message(content=message.content, user_id=message.user_id, group_id=group_id)
+        session.add(db_message)
+        session.commit()
+        session.refresh(db_message)
+        return(db_message)
+    else:
+        return {"message" : "Le groupe ou l'utilisateur n'existe pas, ou l'utilisateur n'est pas inscrit au groupe"}
+
+@app.get("/api/messages/group/{group_id}")
+def get_messages_group(group_id : int, session : SessionDep):
+    db_group = session.get(Group, group_id)
+    if db_group is not None:
+        return [
+            {
+                "id": message.id,
+                "content": message.content,
+                "user_id": message.user_id
+            }
+            for message in db_group.messages
+        ]
+    else:
+        return {"message" : "Le groupe n'existe pas"}
+
+
 
 
          
