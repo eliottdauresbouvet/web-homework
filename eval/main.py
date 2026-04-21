@@ -1,5 +1,5 @@
 from contextlib import asynccontextmanager
-from sqlmodel import SQLModel, Field, Relationship, create_engine, Session
+from sqlmodel import SQLModel, Field, Relationship, create_engine, Session, select
 from fastapi import FastAPI, Depends
 from typing import Annotated
 
@@ -55,6 +55,12 @@ class Message(SQLModel, table=True):
     user: "User" = Relationship()
     group: "Group" = Relationship()
 
+class MessageCreate(SQLModel):
+    content : str
+    user_id : int
+    group_id : int
+
+
 app = FastAPI(lifespan=lifespan)
 
 @app.get("/")
@@ -63,24 +69,34 @@ async def root():
 
 @app.post("/api/users/")
 async def create_users(user : UserCreate, session : SessionDep):
-    session.add(user)
+    db_user = User(name=user.name)
+    session.add(db_user)
     session.commit()
-    session.refresh(user)
-    return(user)
+    session.refresh(db_user)
+    return(db_user)
 
 @app.post("/api/groups/")
 async def create_groups(group : GroupCreate, session : SessionDep):
-    session.add(group)
+    db_group = Group(name=group.name)
+    session.add(db_group)
     session.commit()
-    session.refresh(group)
-    return(group)
+    session.refresh(db_group)
+    return(db_group)
 
-@app.post("api/messages/")
-async def create_messages(message : Message, session : SessionDep):
-    session.add(message)
+@app.post("/api/messages/")
+async def create_messages(message : MessageCreate, session : SessionDep):
+    db_message = Message(content=message.content, user_id=message.user_id, group_id=message.group_id)
+    session.add(db_message)
     session.commit()
-    session.refresh(message)
-    return(message)
+    session.refresh(db_message)
+    return(db_message)
+
+
+@app.get("/api/users")
+def get_users(session: SessionDep):
+    users = session.exec(select(User)).all()
+    return users
+
 
 
 
