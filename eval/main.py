@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 from sqlmodel import SQLModel, Field, Relationship, create_engine, Session, select
 from fastapi import FastAPI, Depends
 from typing import Annotated
+from Pydantic import BaseModel
 
 
 DATABASE_URL = "sqlite:///database.db"
@@ -91,12 +92,26 @@ async def create_messages(message : MessageCreate, session : SessionDep):
     session.refresh(db_message)
     return(db_message)
 
-
 @app.get("/api/users")
 def get_users(session: SessionDep):
     users = session.exec(select(User)).all()
-    return users
+    return [
+        {
+            "id": user.id,
+            "name": user.name
+        }
+        for user in users
+    ]
 
-
+@app.get("/api/groups")
+def get_groups(session: SessionDep):
+    groups = session.exec(select(Group)).all()
+    return [
+        {
+            "id": group.id,
+            "name": group.name
+        }
+        for group in groups
+    ]
 
 
