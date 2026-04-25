@@ -1,4 +1,5 @@
 1. Description
+
 Ce projet est une application web simple inspirée de WhatsApp.
 Elle permet à des utilisateurs prédéfinis de rejoindre des salons (rooms), de s’y abonner, d’y entrer et d’échanger des messages en temps réel.
 
@@ -22,7 +23,6 @@ Le frontend est réalisé en HTML / CSS / JavaScript.
 -Mise à jour automatique de la liste des messages
 
 3. Structure du projet
-Code
 
 main.py
 database.db
@@ -37,7 +37,7 @@ static/
         rooms.js
         chat.js
 
-4. Lancement
+4. Lancement (le projet a été lancé sur Google Chrome)
 
 4.1. (Optionnel) Réinitialiser la base
 
@@ -65,6 +65,10 @@ Créer des rooms
 http POST http://localhost:8000/rooms name=social
 http POST http://localhost:8000/rooms name=sports
 http POST http://localhost:8000/rooms name=bde
+
+Associer des rooms aux utilisateurs
+
+http POST 
 
 6. Fonctionnement de l’interface
 
@@ -114,3 +118,8 @@ Messages
 
 GET /messages/{room_id} — messages d’une room
 WebSocket /ws/{room_id} — envoi / réception en temps réel
+
+8. Piste d'amélioration
+
+Mettre sur le côté la liste des rooms pour naviguer plus facilement qu'avec les flèches du navigateur
+Différencier les messages des différents utilisateurs / utiliser un timestamp

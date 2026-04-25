@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html>
+<!-- on lie le fichier js -->
+<script src="/static/js/chat.js"></script> 
 <head>
     <title>{{ group_name }}</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <!-- on lie le fichier css -->
+    <link rel="stylesheet" href="/static/css/style.css"> 
 </head>
 <body>
     <main class="chat-root">
-
+        <!-- Le nom du groupe est affiché avec Jinja2 -->
         <h1>{{ group_name }}</h1>
 
         <div id="messages"></div>
@@ -15,16 +18,13 @@
             <input id="messageInput" type="text" placeholder="Écris un message">
             <button id="sendBtn">Envoyer</button>
         </div>
-
     </main>
-
-    <script>
+    <!-- Injecter les variables du groupe dans le JavaScript en les récupérant avec Jinja2 -->
+    <script> 
         const groupId = {{ group_id }};
-        const groupName = "{{ group_name }}";
-    </script>
-    <script src="/static/js/chat.js"></script>
+        const groupName = "{{ group_name }}"; 
+    </script>  
 </body>
-
 </html>
 
 

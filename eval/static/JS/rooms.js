@@ -5,18 +5,18 @@ async function loadRooms() {
         return;
     }
 
-    // 1) Récupérer toutes les rooms
+    // Récupérer toutes les rooms
     const allGroups = await (await fetch("/api/groups")).json();
 
-    // 2) Récupérer les rooms auxquelles le user est inscrit
+    // Récupérer les rooms auxquelles le user est inscrit
     const userGroups = await (await fetch(`/api/groups_users/${userId}`)).json();
     const subscribedIds = userGroups.map(g => g.id);
 
-    // 3) Conteneur principal
+    // Conteneur principal
     const container = document.getElementById("rooms");
     container.innerHTML = "";
 
-    // 4) Affichage de chaque room
+    // Affichage de chaque room
     allGroups.forEach(group => {
         const div = document.createElement("div");
         div.className = "room-card";

@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
+<!-- on lie le fichier js -->
+<script src="/static/js/username.js"></script> 
 <head>
     <title>Choisir un utilisateur</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <!-- on lie le fichier css -->
+    <link rel="stylesheet" href="/static/css/style.css"> 
 </head>
 <body>
-
     <main class="username-root">
 
         <h1>Bienvenue</h1>
@@ -16,41 +18,7 @@
                 <option value=""> Choisir un utilisateur </option>
             </select>
         </div>
-
         <button id="usernameBtn">Continuer</button>
-
     </main>
-
-    <script>
-        async function loadUsers() {
-            const res = await fetch("/api/users");
-            const users = await res.json();
-
-            const select = document.getElementById("userSelect");
-
-            users.forEach(u => {
-                const opt = document.createElement("option");
-                opt.value = u.id;
-                opt.textContent = u.name;
-                select.appendChild(opt);
-            });
-        }
-
-        loadUsers();
-
-        document.getElementById("usernameBtn").onclick = () => {
-            const userId = document.getElementById("userSelect").value;
-
-            if (!userId) return;
-
-            // Stockage local
-            localStorage.setItem("user_id", userId);
-
-            // Redirection
-            window.location.href = "/rooms";
-        };
-    </script>
-
-
 </body>
 </html>
